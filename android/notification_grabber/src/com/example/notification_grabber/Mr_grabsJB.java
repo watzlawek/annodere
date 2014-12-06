@@ -12,9 +12,15 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.widget.RemoteViews;
 
+/*Nur für API 18 (Jellybean)*/
 @TargetApi(18)
 public class Mr_grabsJB extends NotificationListenerService {
 
+	/*Holt aus der StatusBarNotification die Notification und extrahiert deren Infos mit Reflections(?). Diese Infos
+	 werden an einen Intent gehangen und verschickt.
+	 http://stackoverflow.com/questions/9292032/extract-notification-text-from-parcelable-contentview-or-contentintent
+	 Hier ist der Link, wo ich den try-catch-Block her habe. Ist TomTasche's Antwort, die darunter liefert dazu noch eine
+	 verständliche Erklärung.*/
 	@Override
 	public void onNotificationPosted(StatusBarNotification sbn) {
 		Notification mNotification = sbn.getNotification();

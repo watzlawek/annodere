@@ -11,8 +11,14 @@ import android.content.Intent;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.RemoteViews;
 
+/*Für API<18*/
 public class Mr_grabs extends AccessibilityService {
 
+	/*Bekommt durch den AccesibilityService ein Parcelable, in dem die Notification enthalten ist und extrahiert deren 
+	 * Infos mit Reflections(?). Diese Infos werden an einen Intent gehangen und verschickt.
+	 http://stackoverflow.com/questions/9292032/extract-notification-text-from-parcelable-contentview-or-contentintent
+	 Hier ist der Link, wo ich den try-catch-Block her habe. Ist TomTasche's Antwort, die darunter liefert dazu noch eine
+	 verständliche Erklärung.*/
 	@Override
 	public void onAccessibilityEvent(AccessibilityEvent event) {
 		if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) {

@@ -10,9 +10,13 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
+/*Nur für API 19 (Kitkat)*/
 @TargetApi(19)
 public class Mr_grabsKK extends NotificationListenerService {
 
+	/*Extrahiert aus der StatusBarNotification die Notification. In deren Subklasse Bundle liegen alle Informationen, 
+	 die man mit den entsprechenden Keys "EXTRA_TITLE", "EXTRA_TEXT", usw. holen kann. Diese werden dann an einen
+	 Intent gehangen und verschickt.*/
 	@Override
 	public void onNotificationPosted(StatusBarNotification sbn) {
 		Notification mNotification = sbn.getNotification();

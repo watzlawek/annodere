@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		/*Checkt die Version und benutzt dann die dementsprechende Klasse zum Extrahieren der Notifications*/
 		// API 19 and above
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 			Mr_grabsKK grabber = new Mr_grabsKK();
@@ -74,6 +75,7 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/*Methode um schnell zu den Optionen zu kommen und den NotificationListener zu erlauben.*/
 	public void unlock(View view) {
 		Intent intent = new Intent(
 				"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
@@ -95,6 +97,8 @@ public class MainActivity extends Activity {
 		unregisterReceiver(mReceiver);
 	}
 
+	/*Receiver zum Erhalten von Broadcasts, die die jeweilige Mr_grabs Klasse schickt. In dem Intent des Broadcasts
+	 sind die Strings mit den relevanten Informationen enthalten und mit den Keys "title" und "text" abrufbar.*/
 	public class MyReceiver extends BroadcastReceiver {
 
 		@Override
