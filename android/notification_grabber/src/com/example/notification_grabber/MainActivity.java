@@ -16,11 +16,16 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	protected MyReceiver mReceiver = new MyReceiver();
+//	protected MyReceiver mReceiver = new MyReceiver();
 	public static final String INTENT_ACTION_NOTIFICATION = "com.example.notification_grabber";
-	private int noti_counter = 0;
+	private static int noti_counter = 0;
 
-	protected TextView title1, title2, title3, text1, text2, text3;
+	protected static TextView title1;
+	protected static TextView title2;
+	protected static TextView title3;
+	protected static TextView text1;
+	protected static TextView text2;
+	protected static TextView text3;
 
 	// protected ImageView icon1, icon2, icon3;
 
@@ -85,65 +90,97 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (mReceiver == null)
-			mReceiver = new MyReceiver();
-		registerReceiver(mReceiver,
-				new IntentFilter(INTENT_ACTION_NOTIFICATION));
+//		if (mReceiver == null)
+//			mReceiver = new MyReceiver();
+//		registerReceiver(mReceiver,
+//				new IntentFilter(INTENT_ACTION_NOTIFICATION));
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(mReceiver);
+//		unregisterReceiver(mReceiver);
 	}
+	
+	public static void receiveNoti(Notification_data noti) {
+		switch (noti_counter % 3) {
+		case 0:
+			title1.setText(noti.getTitle());
+			text1.setText(noti.getText());
+			// if(notificationIcon!=null) {
+			// icon1.setImageBitmap(notificationIcon);
+			// }
+			break;
+		case 1:
+			title2.setText(noti.getTitle());
+			text2.setText(noti.getText());
+			// if(notificationIcon!=null) {
+			// icon2.setImageBitmap(notificationIcon);
+			// }
+			break;
+		case 2:
+			title3.setText(noti.getTitle());
+			text3.setText(noti.getText());
+			// if(notificationIcon!=null) {
+			// icon3.setImageBitmap(notificationIcon);
+			// }
+			break;
+
+		default:
+			break;
+		}
+		noti_counter++;
+	}
+	
+	
 
 	/*Receiver zum Erhalten von Broadcasts, die die jeweilige Mr_grabs Klasse schickt. In dem Intent des Broadcasts
 	 sind die Strings mit den relevanten Informationen enthalten und mit den Keys "title" und "text" abrufbar.*/
-	public class MyReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			System.out.println("Intent received");
-			String notificationTitle = null;
-			String notificationText = null;
-			// Bitmap notificationIcon = null;
-			if (intent != null) {
-				notificationTitle = intent.getStringExtra("title");
-				notificationText = intent.getStringExtra("text");
-				System.out.println("Title in Main: " + notificationTitle);
-				System.out.println("Text in Main: " + notificationText);
-				// notificationIcon =
-				// bytearray_to_bitmap(intent.getByteArrayExtra("icon"));
-				switch (noti_counter % 3) {
-				case 0:
-					title1.setText(notificationTitle);
-					text1.setText(notificationText);
-					// if(notificationIcon!=null) {
-					// icon1.setImageBitmap(notificationIcon);
-					// }
-					break;
-				case 1:
-					title2.setText(notificationTitle);
-					text2.setText(notificationText);
-					// if(notificationIcon!=null) {
-					// icon2.setImageBitmap(notificationIcon);
-					// }
-					break;
-				case 2:
-					title3.setText(notificationTitle);
-					text3.setText(notificationText);
-					// if(notificationIcon!=null) {
-					// icon3.setImageBitmap(notificationIcon);
-					// }
-					break;
-
-				default:
-					break;
-				}
-				noti_counter++;
-			}
-
-		}
+//	public class MyReceiver extends BroadcastReceiver {
+//
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			System.out.println("Intent received");
+//			String notificationTitle = null;
+//			String notificationText = null;
+//			// Bitmap notificationIcon = null;
+//			if (intent != null) {
+//				notificationTitle = intent.getStringExtra("title");
+//				notificationText = intent.getStringExtra("text");
+//				System.out.println("Title in Main: " + notificationTitle);
+//				System.out.println("Text in Main: " + notificationText);
+//				// notificationIcon =
+//				// bytearray_to_bitmap(intent.getByteArrayExtra("icon"));
+//				switch (noti_counter % 3) {
+//				case 0:
+//					title1.setText(notificationTitle);
+//					text1.setText(notificationText);
+//					// if(notificationIcon!=null) {
+//					// icon1.setImageBitmap(notificationIcon);
+//					// }
+//					break;
+//				case 1:
+//					title2.setText(notificationTitle);
+//					text2.setText(notificationText);
+//					// if(notificationIcon!=null) {
+//					// icon2.setImageBitmap(notificationIcon);
+//					// }
+//					break;
+//				case 2:
+//					title3.setText(notificationTitle);
+//					text3.setText(notificationText);
+//					// if(notificationIcon!=null) {
+//					// icon3.setImageBitmap(notificationIcon);
+//					// }
+//					break;
+//
+//				default:
+//					break;
+//				}
+//				noti_counter++;
+//			}
+//
+//		}
 
 		// private Bitmap bytearray_to_bitmap(byte[] byteArray) {
 		// // byte[] byteArray = getIntent().getByteArrayExtra("image");
@@ -151,5 +188,5 @@ public class MainActivity extends Activity {
 		// byteArray.length);
 		// return bmp;
 		// }
-	}
+//	}
 }

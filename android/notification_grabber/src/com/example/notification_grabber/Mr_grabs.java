@@ -13,6 +13,7 @@ import android.widget.RemoteViews;
 
 /*Für API<18*/
 public class Mr_grabs extends AccessibilityService {
+	Notification_data noti;
 
 	/*Bekommt durch den AccesibilityService ein Parcelable, in dem die Notification enthalten ist und extrahiert deren 
 	 * Infos mit Reflections(?). Diese Infos werden an einen Intent gehangen und verschickt.
@@ -63,10 +64,11 @@ public class Mr_grabs extends AccessibilityService {
 							text.put(viewId, value.toString());
 						}
 					}
-					Intent intent = new Intent(
-							MainActivity.INTENT_ACTION_NOTIFICATION);
-					intent.putExtra("title", text.get(16908310));
-					intent.putExtra("text", text.get(16908358));
+					noti = new Notification_data(text.get(16908310),text.get(16908358), null);
+//					Intent intent = new Intent(
+//							MainActivity.INTENT_ACTION_NOTIFICATION);
+//					intent.putExtra("title", text.get(16908310));
+//					intent.putExtra("text", text.get(16908358));
 					// System.out.println("title is: " + text.get(16908310));
 					// System.out.println("info is: " + text.get(16909082));
 					// System.out.println("text is: " + text.get(16908358));
@@ -74,7 +76,8 @@ public class Mr_grabs extends AccessibilityService {
 							+ text.get(16908310));
 					System.out.println("Text in grabber API<18: "
 							+ text.get(16908358));
-					sendBroadcast(intent);
+//					sendBroadcast(intent);
+					MainActivity.receiveNoti(noti);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

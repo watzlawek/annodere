@@ -13,6 +13,7 @@ import android.service.notification.StatusBarNotification;
 /*Nur für API 19 (Kitkat)*/
 @TargetApi(19)
 public class Mr_grabsKK extends NotificationListenerService {
+	Notification_data noti;
 
 	/*Extrahiert aus der StatusBarNotification die Notification. In deren Subklasse Bundle liegen alle Informationen, 
 	 die man mit den entsprechenden Keys "EXTRA_TITLE", "EXTRA_TEXT", usw. holen kann. Diese werden dann an einen
@@ -28,14 +29,15 @@ public class Mr_grabsKK extends NotificationListenerService {
 			// Bitmap notificationIcon = ((Bitmap) extras
 			// .getParcelable(Notification.EXTRA_SMALL_ICON));
 			String notificationText = extras.getString(Notification.EXTRA_TEXT);
-
-			Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
-			intent.putExtra("title", notificationTitle);
-			intent.putExtra("text", notificationText);
-			System.out.println("Title in grabber API>18: " + notificationTitle);
-			System.out.println("Text in grabber API>18: " + notificationText);
+			noti = new Notification_data(notificationTitle,notificationText, null);
+//			Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
+//			intent.putExtra("title", notificationTitle);
+//			intent.putExtra("text", notificationText);
+//			System.out.println("Title in grabber API>18: " + notificationTitle);
+//			System.out.println("Text in grabber API>18: " + notificationText);
 			// intent.putExtra("icon", bitmap_to_bytearray(notificationIcon));
-			sendBroadcast(intent);
+//			sendBroadcast(intent);
+			MainActivity.receiveNoti(noti);
 		}
 	}
 
