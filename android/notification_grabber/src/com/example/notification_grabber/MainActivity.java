@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 			Mr_grabs grabber = new Mr_grabs();
 			System.out.println("____________________Mr_grabs initialised");
 		}
-
+		//TEST FOR GITHUB
 		title1 = (TextView) findViewById(R.id.noti_title1);
 		title2 = (TextView) findViewById(R.id.noti_title2);
 		title3 = (TextView) findViewById(R.id.noti_title3);
