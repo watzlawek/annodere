@@ -8,9 +8,11 @@ import android.content.IntentFilter;
 //import android.graphics.Bitmap;
 //import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 //import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ public class MainActivity extends Activity {
 //	protected MyReceiver mReceiver = new MyReceiver();
 	public static final String INTENT_ACTION_NOTIFICATION = "com.example.notification_grabber";
 	private static int noti_counter = 0;
+	
+	private static int noti_counter_internal = -1;
 
 	protected static TextView title1;
 	protected static TextView title2;
@@ -26,6 +30,13 @@ public class MainActivity extends Activity {
 	protected static TextView text1;
 	protected static TextView text2;
 	protected static TextView text3;
+	
+	protected static String notification_title = "";
+	protected static String notification_text = "";
+	
+	protected static TextView texted_noti_counter;
+	
+	protected Handler handler;	
 
 	// protected ImageView icon1, icon2, icon3;
 
@@ -33,8 +44,13 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//Starte Runnable Thread fuer die UI-Aktualisierung
+		this.handler = new Handler();
+    	this.handler.postDelayed(runnable,500);
+    	
 		/*Checkt die Version und benutzt dann die dementsprechende Klasse zum Extrahieren der Notifications*/
-		// API 19 and above
+		/*// API 19 and above
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 			Mr_grabsKK grabber = new Mr_grabsKK();
 			System.out.println("____________________Mr_grabsKK initialised");
@@ -44,8 +60,8 @@ public class MainActivity extends Activity {
 			Mr_grabsJB grabber = new Mr_grabsJB();
 			System.out.println("____________________Mr_grabsJB initialised");
 		}
-		// API 17 and below
-		else {
+		// API 17 and below*/
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			Mr_grabs grabber = new Mr_grabs();
 			System.out.println("____________________Mr_grabs initialised");
 		}
@@ -56,6 +72,7 @@ public class MainActivity extends Activity {
 		text1 = (TextView) findViewById(R.id.noti_text1);
 		text2 = (TextView) findViewById(R.id.noti_text2);
 		text3 = (TextView) findViewById(R.id.noti_text3);
+		texted_noti_counter = (TextView) findViewById(R.id.notification_counter);
 		// icon1 = (ImageView) findViewById(R.id.noti_icon1);
 		// icon2 = (ImageView) findViewById(R.id.noti_icon2);
 		// icon3 = (ImageView) findViewById(R.id.noti_icon3);
@@ -82,14 +99,64 @@ public class MainActivity extends Activity {
 
 	/*Methode um schnell zu den Optionen zu kommen und den NotificationListener zu erlauben.*/
 	public void unlock(View view) {
+		noti_counter = 0;
+		noti_counter_internal = 0;
+
 		Intent intent = new Intent(
 				"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
 		startActivity(intent);
+		
+	}
+
+	
+	private final Runnable runnable = new Runnable() {
+	    public void run()   {	    	
+	    		handler.postDelayed(runnable,500);
+	    		updateUI();
+	    }
+	};
+	
+	protected void updateUI() {
+		
+		Integer tmp = new Integer(noti_counter);
+		texted_noti_counter.setText("Notifications: "+ tmp.toString());	
+		
+		switch (noti_counter_internal % 3) {
+		case 0:
+			title1.setText(notification_title);
+			text1.setText(notification_text);
+			// if(notificationIcon!=null) {
+			// icon1.setImageBitmap(notificationIcon);
+			// }
+			break;
+		case 1:
+			title2.setText(notification_title);
+			text2.setText(notification_text);
+			// if(notificationIcon!=null) {
+			// icon2.setImageBitmap(notificationIcon);
+			// }
+			break;
+		case 2:
+			title3.setText(notification_title);
+			text3.setText(notification_text);
+			// if(notificationIcon!=null) {
+			// icon3.setImageBitmap(notificationIcon);
+			// }
+			noti_counter_internal = -1; // Reset!
+			break;
+
+		default:
+			break;
+		}
+		
+	
+		
 	}
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
+		updateUI();
 //		if (mReceiver == null)
 //			mReceiver = new MyReceiver();
 //		registerReceiver(mReceiver,
@@ -103,33 +170,10 @@ public class MainActivity extends Activity {
 	}
 	
 	public static void receiveNoti(Notification_data noti) {
-		switch (noti_counter % 3) {
-		case 0:
-			title1.setText(noti.getTitle());
-			text1.setText(noti.getText());
-			// if(notificationIcon!=null) {
-			// icon1.setImageBitmap(notificationIcon);
-			// }
-			break;
-		case 1:
-			title2.setText(noti.getTitle());
-			text2.setText(noti.getText());
-			// if(notificationIcon!=null) {
-			// icon2.setImageBitmap(notificationIcon);
-			// }
-			break;
-		case 2:
-			title3.setText(noti.getTitle());
-			text3.setText(noti.getText());
-			// if(notificationIcon!=null) {
-			// icon3.setImageBitmap(notificationIcon);
-			// }
-			break;
-
-		default:
-			break;
-		}
-		noti_counter++;
+		notification_title = noti.getTitle();
+		notification_text = noti.getText();
+		noti_counter++;		
+		noti_counter_internal++;
 	}
 	
 	
