@@ -99,12 +99,25 @@ public class MainActivity extends Activity {
 
 	/*Methode um schnell zu den Optionen zu kommen und den NotificationListener zu erlauben.*/
 	public void unlock(View view) {
-		noti_counter = 0;
+		
+		
+		
+		/*noti_counter = 0;
 		noti_counter_internal = 0;
 
 		Intent intent = new Intent(
 				"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-		startActivity(intent);
+		startActivity(intent);*/
+		
+		
+		BasicClassHTTP bsk = new BasicClassHTTP();
+		bsk.doBasicClassHTTPRequest();
+		bsk.setContext(this);
+		
+		if (bsk.haveNetworkConnection()) {
+			bsk.doBasicClassHTTPRequest();    	
+
+    	}
 		
 	}
 
